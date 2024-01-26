@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    # ports:
+    #   - "3000:80"
+    networks:
+      - my_network
+    depends_on:
+      - dbapp
+
+  dbapp:
+    build:
+      context: ./dbapp
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    # ports:
+    #   - "3307:3306"
+    networks:
+      - my_network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+networks:
+  my_network:
+
+volumes:
+  mysql_data:
